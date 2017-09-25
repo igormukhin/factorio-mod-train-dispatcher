@@ -17,6 +17,9 @@ station_states = global.station_states
 if not global.train_states then global.train_states = {} end
 train_states = global.train_states
 
+if not global.units then global.units = {} end
+units = global.units
+
 --[[
 script.on_event({defines.events.on_tick},
     function (e)

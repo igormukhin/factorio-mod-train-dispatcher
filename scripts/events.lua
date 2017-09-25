@@ -11,13 +11,14 @@ function script_on_configuration_changed()
 end
 
 function event_on_entity_renamed(e)
-    game.print("Renamed " .. e.old_name .. " to " .. e.entity.backer_name)
+    -- game.print("Renamed " .. e.old_name .. " to " .. e.entity.backer_name)
 
     -- rename the key in station_states
     local stationState = station_states[e.old_name]
     station_states[e.entity.backer_name] = stationState
     station_states[e.old_name] = nil
 
+    refresh_units(e.entity.surface)
 end
 
 function event_on_train_changed_state(e)
@@ -54,6 +55,43 @@ function get_train_state(trainEntity)
     return train_states[trainEntity.id]
 end
 
+function get_dispatcher_postfix()
+    return "Dispatcher";
+end
+
 function is_dispatcher(stopEntity)
-    return stopEntity.backer_name:ends('Dispatcher')
+    return stopEntity.backer_name:ends(get_dispatcher_postfix())
+end
+
+function get_unit_name(stopEntity)
+    if is_dispatcher(stopEntity) then
+        return stopEntity.backer_name:sub(1, stopEntity.backer_name:len() - get_dispatcher_postfix():len())
+    else
+        error("not a dispatcher")
+    end
+end
+
+function refresh_units(surface)
+    local stops = surface.find_entities_filtered{type = "train-stop"}
+    units:clear()
+
+    -- find unit names
+    for _, stop in ipairs(stops) do
+        if is_dispatcher(stop) then
+            units[get_unit_name(stop)] = { endpoints = {} }
+        end
+    end
+
+    -- find endpoints
+    for _, stop in ipairs(stops) do
+        if not is_dispatcher(stop) then
+            for unitName, unitData in pairs(units) do
+                if stop.backer_name:starts(unitName) then
+                    unitData.endpoints[stop.backer_name] = true
+                end
+            end
+        end
+    end
+
+    game.print(units)
 end
