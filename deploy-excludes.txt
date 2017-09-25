@@ -1,0 +1,6 @@
+.idea
+.gitignore
+deploy-excludes.txt
+factorio-mod-train-dispatcher.iml
+deploy.bat
+out

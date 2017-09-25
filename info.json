@@ -1,0 +1,10 @@
+{
+  "name": "train-dispatcher",
+  "version": "0.0.1",
+  "title": "Train Dispatcher",
+  "author": "Igor Mukhin",
+  "contact": "vk.com/igormukhin",
+  "factorio_version": "0.15",
+  "dependencies": ["base >= 0.15"],
+  "description": "This mod dynamically controls train schedules to distribute trains evenly between stations that provide or require the same resource. For example, if you have stations like “Iron Ore Patch A”, “Iron Ore Patch B”, “Iron Ore Patch C” a special station named “Iron Ore Patch Dispatcher” will dispatch trains arriving at it evenly to the tree patch stations."
+}
