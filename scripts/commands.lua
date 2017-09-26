@@ -1,3 +1,5 @@
 function command_status()
-    game.print("I'm status command of the Train Dispatcher mod")
+    game.print("station_states: " .. table.tostring(station_states))
+    game.print("train_states: " .. table.tostring(train_states))
+    game.print("units: " .. table.tostring(units))
 end

@@ -11,21 +11,9 @@ script.on_event(defines.events.on_train_changed_state, event_on_train_changed_st
 
 commands.add_command("td-status", {"", "Status of the Train Dispatcher mod"}, command_status)
 
-if not global.station_states then global.station_states = {} end
-station_states = global.station_states
-
-if not global.train_states then global.train_states = {} end
-train_states = global.train_states
-
-if not global.units then global.units = {} end
-units = global.units
-
-
---[[
-script.on_event({defines.events.on_tick},
-    function (e)
-        if e.tick % 300 == 0 then
-            game.print(table.tostring({x=1}))
-        end
+script.on_event(defines.events.on_tick,
+    function ()
+        script.on_event(defines.events.on_tick, nil)
+        init()
     end
-)]]--
+)
