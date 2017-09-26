@@ -13,6 +13,8 @@ end
 function event_on_entity_renamed(e)
     -- game.print("Renamed " .. e.old_name .. " to " .. e.entity.backer_name)
 
+    -- TODO: copy/pasting a station does fire on_entity_renamed
+
     -- rename the key in station_states
     local stationState = station_states[e.old_name]
     station_states[e.entity.backer_name] = stationState
@@ -60,7 +62,7 @@ function get_dispatcher_postfix()
 end
 
 function is_dispatcher(stopEntity)
-    return stopEntity.backer_name:ends(get_dispatcher_postfix())
+    return string.ends(stopEntity.backer_name, get_dispatcher_postfix())
 end
 
 function get_unit_name(stopEntity)
@@ -72,8 +74,8 @@ function get_unit_name(stopEntity)
 end
 
 function refresh_units(surface)
-    local stops = surface.find_entities_filtered{type = "train-stop"}
-    units:clear()
+    local stops = surface.find_entities_filtered{type = "train-stop" }
+    table.clear(units)
 
     -- find unit names
     for _, stop in ipairs(stops) do
@@ -86,12 +88,12 @@ function refresh_units(surface)
     for _, stop in ipairs(stops) do
         if not is_dispatcher(stop) then
             for unitName, unitData in pairs(units) do
-                if stop.backer_name:starts(unitName) then
+                if string.starts(stop.backer_name, unitName) then
                     unitData.endpoints[stop.backer_name] = true
                 end
             end
         end
     end
 
-    game.print(units)
+    game.print(table.tostring(units))
 end
